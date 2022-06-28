@@ -1,7 +1,7 @@
 package router
 
 import (
-	v1 "api/apis/v1"
+	v1 "eth-service-demo/apis/v1"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,7 +1,7 @@
 package apis
 
 import (
-	model "api/models"
+	model "eth-service-demo/models"
 	"fmt"
 	"net/http"
 	"strconv"

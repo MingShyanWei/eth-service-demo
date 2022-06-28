@@ -8,8 +8,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+
+	db "eth-service-demo/database"
+	model "eth-service-demo/models"
 )
 
 var ctx = context.TODO()
@@ -18,24 +19,8 @@ type indexer struct {
 	client *ethclient.Client
 }
 
-type Block struct {
-	Num        uint64 `gorm:"primary_key;autoIncrement:false"`
-	Hash       string `gorm:"type:varchar(64);unique_index"`
-	ParentHash string `gorm:"type:varchar(64);unique_index"`
-	Time       uint64
-}
-
-type Transaction struct {
-	TxHash string `gorm:"primary_key;type:varchar(67)`
-	Num    uint64 `gorm:"index"` // TODO: index_type as hash
-	From   string `gorm:"type:varchar(43)"`
-	To     string `gorm:"type:varchar(43)"`
-	Nonce  uint64
-	Data   string
-	value  string
-}
-
 func main() {
+	db.Init()
 
 	client, err := ethclient.Dial("https://data-seed-prebsc-2-s3.binance.org:8545/")
 	if err != nil {
@@ -50,12 +35,6 @@ func main() {
 }
 
 func (indexer *indexer) Start(from int64, to int64) error {
-
-	dsn := "root:kzy0RV0lte@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic(err)
-	}
 
 	start := big.NewInt(from)
 	end := big.NewInt(to)
@@ -72,13 +51,13 @@ func (indexer *indexer) Start(from int64, to int64) error {
 		fmt.Println(block.Hash().Hex())       // bk_hash 0x4a5aad19c3b7b375852c787c66f1eb86a6ba3e359164966782a2456c99bc794d
 		fmt.Println(block.ParentHash().Hex()) // bk_parenthash 0xe9f64982c3fd8c1caa6cb8c68b8cf75cd5baa72223009fd426879b3e7fa3ed3b
 
-		var newBlock = Block{
+		var newBlock = model.Block{
 			Num:        block.Number().Uint64(),
 			Hash:       block.Hash().String(),
 			ParentHash: block.ParentHash().String(),
 			Time:       block.Time(),
 		}
-		db.Create(&newBlock)
+		db.GetDb().Create(&newBlock)
 
 		fmt.Println(block.Transactions())
 
@@ -101,16 +80,16 @@ func (indexer *indexer) Start(from int64, to int64) error {
 			fmt.Println(string(hex.EncodeToString(tx.Data()))) // tx_data []
 			fmt.Println(tx.Value().String())                   // tx_value 200000000000000000
 
-			var newTransaction = Transaction{
+			var newTransaction = model.Transaction{
 				TxHash: tx.Hash().String(),
 				Num:    block.Number().Uint64(),
 				From:   msg.From().String(),
 				To:     tx.To().String(),
 				Nonce:  tx.Nonce(),
 				Data:   "0x" + string(hex.EncodeToString(tx.Data())),
-				value:  tx.Value().String(),
+				Value:  tx.Value().String(),
 			}
-			db.Create(&newTransaction)
+			db.GetDb().Create(&newTransaction)
 
 		}
 
