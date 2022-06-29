@@ -13,6 +13,7 @@ func InitRouter() *gin.Engine {
 
 	apiV1.GET("blocks", v1.ListBlocks)
 	apiV1.GET("blocks/:num", v1.GetBlock)
+	apiV1.GET("transaction/:txHash", v1.GetTransaction)
 
 	return router
 }
