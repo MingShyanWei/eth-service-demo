@@ -1,0 +1,23 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: eth-service-demo-api
+  namespace: demo
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  tls:
+    - hosts:
+        - eth-service-demo-api.stepnhub.com
+      secretName: stepnhub-tls
+  rules:
+    - host: eth-service-demo-api.stepnhub.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: eth-service-demo-api
+                port:
+                  number: 8000

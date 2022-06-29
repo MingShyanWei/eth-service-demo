@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: eth-service-demo-api
+  namespace: demo
+  labels:
+    app: eth-service-demo-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eth-service-demo-api
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: eth-service-demo-api
+    spec:
+      imagePullSecrets:
+        - name: "stepnhub"
+      containers:
+        - name: eth-service-demo-api
+          image: stepnhub.azurecr.io/eth-service-demo-api:20220629
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: DB_CONNECTION
+              value: "root:kzy0RV0lte@tcp(mysql:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 1001
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

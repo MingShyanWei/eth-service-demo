@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: eth-service-demo-api
+  namespace: demo
+  labels:
+    app: eth-service-demo-api
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: eth-service-demo-api
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster
+
