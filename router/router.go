@@ -1,6 +1,8 @@
 package router
 
 import (
+	root "eth-service-demo/apis"
+
 	v1 "eth-service-demo/apis/v1"
 
 	"github.com/gin-gonic/gin"
@@ -8,6 +10,8 @@ import (
 
 func InitRouter() *gin.Engine {
 	router := gin.Default()
+
+	router.GET("/", root.Hello)
 
 	apiV1 := router.Group("/v1")
 
