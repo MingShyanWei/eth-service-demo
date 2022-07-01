@@ -8,5 +8,5 @@ import (
 func main() {
 	db.Init()
 
-	db.GetDb().AutoMigrate(&model.Block{}, &model.Transaction{})
+	db.GetDb().AutoMigrate(&model.Block{}, &model.Transaction{}, &model.TransactionLog{})
 }

@@ -1,0 +1,1 @@
+docker push stepnhub.azurecr.io/eth-service-demo-api:$(date '+%Y%m%d')

@@ -3,13 +3,19 @@ package models
 import db "eth-service-demo/database"
 
 type Transaction struct {
-	TxHash string `gorm:"primary_key;type:varchar(67) json:"tx_hash"`
+	TxHash string `gorm:"primary_key;type:varchar(67)" json:"tx_hash"`
 	Num    uint64 `gorm:"index" json:"-"`
 	From   string `gorm:"type:varchar(43)" json:"from"`
 	To     string `gorm:"type:varchar(43)" json:"to"`
 	Nonce  uint64 `json:"nonce"`
 	Data   string `json:"data"`
 	Value  string `json:"value"`
+}
+
+type TransactionLog struct {
+	TxHash string `gorm:"primary_key;type:varchar(67)" json:"tx_hash"`
+	Index  uint64 `gorm:"primary_key;autoIncrement:false" json:"index"`
+	Data   string
 }
 
 func (transaction *Transaction) GetTransaction(txHash string) (transactions Transaction, err error) {
