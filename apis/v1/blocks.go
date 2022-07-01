@@ -39,7 +39,7 @@ func ListBlocks(c *gin.Context) {
 
 func GetBlock(c *gin.Context) {
 
-	var blockDetail model.BlockDetail
+	var blockWithTranscations model.BlockWithTranscations
 
 	num, err := strconv.ParseInt(c.Param("num"), 10, 64)
 	if err != nil {
@@ -48,7 +48,7 @@ func GetBlock(c *gin.Context) {
 
 	fmt.Println(num)
 
-	result, err := blockDetail.GetBlockDetail(num)
+	result, err := blockWithTranscations.GetBlockDetail(num)
 
 	fmt.Println(result)
 
