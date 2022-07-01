@@ -91,6 +91,24 @@ func (indexer *indexer) Start(from int64, to int64) error {
 			}
 			db.GetDb().Create(&newTransaction)
 
+			receipt, err := indexer.client.TransactionReceipt(context.Background(), tx.Hash())
+			if err != nil {
+				return err
+			}
+
+			if receipt.Status == 1 {
+				for _, log := range receipt.Logs {
+					fmt.Println(log.Index)
+					fmt.Println(log.Data)
+					var newLog = model.TransactionLog{
+						TxHash: tx.Hash().String(),
+						Index:  log.Index,
+						Data:   "0x" + string(hex.EncodeToString(log.Data)),
+					}
+					db.GetDb().Create(&newLog)
+				}
+			}
+
 		}
 
 	}
