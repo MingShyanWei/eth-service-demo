@@ -12,10 +12,6 @@
 
 
 ## TODO Action
-- API function
-    - Transcation of blobk
-    - Log of Transcation
-- RPC to DB based on job-queue
 - DB connection pool
 - Error handle
 
@@ -37,7 +33,12 @@ cd ./migration
 go run migration.go
 ```
 
-3. Eth RPC to DB
+3-1. Eth RPC to DB(Worker based)
+```
+cd ./tools/rpc2db-worker
+go run rpc2db.go
+```
+3-2. Eth RPC to DB(Non-Worker based)
 
 ```
 cd ./tools/rpc2db

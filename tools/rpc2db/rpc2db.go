@@ -16,7 +16,7 @@ import (
 
 var ctx = context.TODO()
 
-type indexer struct {
+type Indexer struct {
 	client *ethclient.Client
 }
 
@@ -45,7 +45,7 @@ func main() {
 	// ERROR: 20683001 0xdae86a289a4bee8c9ff24e300e264db7fb65435d7f8a145857a7987a1b89a06a hasn't to!!!
 }
 
-func (indexer *indexer) Start(from int64, to int64) error {
+func (indexer *Indexer) Start(from int64, to int64) error {
 
 	if from <= to {
 		for i := from; i <= to; i++ {
@@ -60,7 +60,7 @@ func (indexer *indexer) Start(from int64, to int64) error {
 	return nil
 }
 
-func (indexer *indexer) GetBlock(num int64) error {
+func (indexer *Indexer) GetBlock(num int64) error {
 
 	// -- 1. Check block was existed in db --
 
