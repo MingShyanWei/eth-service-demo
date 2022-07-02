@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"log"
 	"math/big"
+	"os"
 	"runtime"
+	"strconv"
 	"sync"
 	"time"
 
@@ -287,7 +289,20 @@ func GetLastBlock(client *ethclient.Client) (int64, error) {
 func main() {
 	db.Init()
 
-	client, err := ethclient.Dial("https://data-seed-prebsc-2-s3.binance.org:8545/")
+	workNum, err := strconv.Atoi(os.Getenv("WORKER_NUM"))
+	if err != nil {
+		// log.Fatal("WORKER_NUM ", err)
+		workNum = runtime.NumCPU()
+	}
+
+	fromBlockNum, err := strconv.ParseInt(os.Getenv("FROM_BLOCK_NUM"), 10, 64)
+	if err != nil {
+		log.Fatal("FROM_BLOCK_NUM ", err)
+	}
+
+	rawurl := os.Getenv("RPC_URL")
+
+	client, err := ethclient.Dial(rawurl)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -298,7 +313,8 @@ func main() {
 
 	// ---
 
-	queue := NewJobQueue(runtime.NumCPU())
+	// queue := NewJobQueue(runtime.NumCPU())
+	queue := NewJobQueue(workNum)
 	queue.Start()
 	defer queue.Stop()
 
@@ -309,7 +325,7 @@ func main() {
 			log.Panic(err)
 		}
 
-		for i = 20683000; i < m; i++ {
+		for i = fromBlockNum; i < m; i++ {
 			queue.Submit(&RPCJob{i})
 		}
 

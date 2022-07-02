@@ -1,0 +1,40 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: eth-service-demo-rpc2db
+  namespace: demo
+  labels:
+    app: eth-service-demo-rpc2db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eth-service-demo-rpc2db
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: eth-service-demo-rpc2db
+    spec:
+      imagePullSecrets:
+        - name: "stepnhub"
+      containers:
+        - name: eth-service-demo-rpc2db
+          image: stepnhub.azurecr.io/eth-service-demo-rpc2db:20220703
+          env:
+            - name: DB_CONNECTION
+              value: "root:kzy0RV0lte@tcp(mysql:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"
+            - name: RPC_URL
+              value: "https://data-seed-prebsc-2-s3.binance.org:8545/"
+            - name: FROM_BLOCK_NUM
+              value: "20683000"
+            - name: WORKER_NUM
+              value: "10"
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+  

@@ -1,0 +1,1 @@
+docker push stepnhub.azurecr.io/eth-service-demo-rpc2db:$(date '+%Y%m%d')

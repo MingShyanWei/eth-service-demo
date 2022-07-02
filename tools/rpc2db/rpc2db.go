@@ -28,7 +28,7 @@ func main() {
 		log.Fatal(err)
 	}
 	// create an indexer
-	indexer := &indexer{
+	indexer := &Indexer{
 		client,
 	}
 

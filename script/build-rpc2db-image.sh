@@ -1,0 +1,1 @@
+docker build -t stepnhub.azurecr.io/eth-service-demo-rpc2db:$(date '+%Y%m%d') -f ../docker/Dockerfile-rpc2db ../
