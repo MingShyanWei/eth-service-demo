@@ -14,6 +14,7 @@ func Init() {
 	var err error
 	// dsn := "root:kzy0RV0lte@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"
 	// export DB_CONNECTION="root:kzy0RV0lte@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"
+
 	dsn := os.Getenv("DB_CONNECTION")
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -26,5 +27,8 @@ func Init() {
 }
 
 func GetDb() *gorm.DB {
+	if db == nil {
+		Init()
+	}
 	return db
 }

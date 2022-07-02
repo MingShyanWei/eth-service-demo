@@ -5,10 +5,11 @@ import (
 )
 
 type Block struct {
-	Num        uint64 `gorm:"primary_key;autoIncrement:false" json:"block_num"`
-	Hash       string `gorm:"type:varchar(66);unique_index" json:"block_hash"`
-	ParentHash string `gorm:"type:varchar(66);unique_index" json:"parent_hash"`
-	Time       uint64 `json:"block_time"`
+	Num          uint64        `gorm:"primary_key;autoIncrement:false" json:"block_num"`
+	Hash         string        `gorm:"type:varchar(66);unique_index" json:"block_hash"`
+	ParentHash   string        `gorm:"type:varchar(66);unique_index" json:"parent_hash"`
+	Time         uint64        `json:"block_time"`
+	Transactions []Transaction `gorm:"-" json:"transactions"`
 }
 
 type BlockWithTranscations struct {
