@@ -27,12 +27,10 @@ type Indexer struct {
 
 var indexer *Indexer
 
-// Job - interface for job processing
 type Job interface {
 	Process(*ethclient.Client)
 }
 
-// Worker - the worker threads that actually process the jobs
 type Worker struct {
 	done             sync.WaitGroup
 	readyPool        chan chan Job
@@ -41,7 +39,6 @@ type Worker struct {
 	quit chan bool
 }
 
-// JobQueue - a queue for enqueueing jobs to be processed
 type JobQueue struct {
 	internalQueue     chan Job
 	readyPool         chan chan Job
@@ -51,7 +48,6 @@ type JobQueue struct {
 	quit              chan bool
 }
 
-// NewJobQueue - creates a new job queue
 func NewJobQueue(maxWorkers int) *JobQueue {
 	workersStopped := sync.WaitGroup{}
 	readyPool := make(chan chan Job, maxWorkers)
@@ -69,7 +65,6 @@ func NewJobQueue(maxWorkers int) *JobQueue {
 	}
 }
 
-// Start - starts the worker routines and dispatcher routine
 func (q *JobQueue) Start() {
 	for i := 0; i < len(q.workers); i++ {
 		q.workers[i].Start()
@@ -77,7 +72,6 @@ func (q *JobQueue) Start() {
 	go q.dispatch()
 }
 
-// Stop - stops the workers and sispatcher routine
 func (q *JobQueue) Stop() {
 	q.quit <- true
 	q.dispatcherStopped.Wait()
@@ -87,9 +81,9 @@ func (q *JobQueue) dispatch() {
 	q.dispatcherStopped.Add(1)
 	for {
 		select {
-		case job := <-q.internalQueue: // We got something in on our queue
-			workerChannel := <-q.readyPool // Check out an available worker
-			workerChannel <- job           // Send the request to the channel
+		case job := <-q.internalQueue:
+			workerChannel := <-q.readyPool
+			workerChannel <- job
 		case <-q.quit:
 			for i := 0; i < len(q.workers); i++ {
 				q.workers[i].Stop()
@@ -101,12 +95,10 @@ func (q *JobQueue) dispatch() {
 	}
 }
 
-// Submit - adds a new job to be processed
 func (q *JobQueue) Submit(job Job) {
 	q.internalQueue <- job
 }
 
-// NewWorker - creates a new worker
 func NewWorker(readyPool chan chan Job, done sync.WaitGroup) *Worker {
 	return &Worker{
 		done:             done,
@@ -116,7 +108,6 @@ func NewWorker(readyPool chan chan Job, done sync.WaitGroup) *Worker {
 	}
 }
 
-// Start - begins the job processing loop for the worker
 func (w *Worker) Start() {
 
 	client, err := ethclient.Dial("https://data-seed-prebsc-2-s3.binance.org:8545/")
@@ -127,9 +118,9 @@ func (w *Worker) Start() {
 	go func() {
 		w.done.Add(1)
 		for {
-			w.readyPool <- w.assignedJobQueue // check the job queue in
+			w.readyPool <- w.assignedJobQueue
 			select {
-			case job := <-w.assignedJobQueue: // see if anything has been assigned to the queue
+			case job := <-w.assignedJobQueue:
 				job.Process(client)
 			case <-w.quit:
 				w.done.Done()
@@ -146,12 +137,12 @@ func (w *Worker) Stop() {
 
 //////////////// Example //////////////////
 
-// TestJob - holds only an ID to show state
+// GetAndSaveBlock Job
 type RPCJob struct {
 	num int64
 }
 
-// Process - test process function
+// Process - GetAndSaveBlock process function
 func (t *RPCJob) Process(client *ethclient.Client) {
 	fmt.Printf("Processing job '%s'\n", t.num)
 	err := GetAndSaveBlock(client, t.num)
