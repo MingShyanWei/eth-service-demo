@@ -309,14 +309,14 @@ func main() {
 	queue.Start()
 	defer queue.Stop()
 
-	var i int64
+	var i int64 = fromBlockNum
 	for {
 		m, err := GetLastBlock(client)
 		if err != nil {
 			log.Panic(err)
 		}
 
-		for i = fromBlockNum; i < m; i++ {
+		for ; i < m; i++ {
 			queue.Submit(&RPCJob{i})
 		}
 
