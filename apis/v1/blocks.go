@@ -2,7 +2,6 @@ package apis
 
 import (
 	model "eth-service-demo/models"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -15,19 +14,18 @@ func ListBlocks(c *gin.Context) {
 
 	limit, err := strconv.Atoi(c.Request.FormValue("limit"))
 	if err != nil {
-		// handle the error in some way
+		c.JSON(http.StatusOK, gin.H{
+			"code":    -1,
+			"message": "limit atoi error",
+		})
+		return
 	}
 
-	fmt.Println(limit)
-
 	result, err := block.ListBlocks(limit)
-
-	fmt.Println(result)
-
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":    -1,
-			"message": "error",
+			"message": ",list block error",
 		})
 		return
 	}
@@ -43,19 +41,18 @@ func GetBlock(c *gin.Context) {
 
 	num, err := strconv.ParseInt(c.Param("num"), 10, 64)
 	if err != nil {
-		panic(err)
+		c.JSON(http.StatusOK, gin.H{
+			"code":    -1,
+			"message": "num atoi error",
+		})
+		return
 	}
 
-	fmt.Println(num)
-
 	result, err := blockWithTranscations.GetBlockDetail(num)
-
-	fmt.Println(result)
-
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":    -1,
-			"message": "error",
+			"message": "GetBlockDetail error",
 		})
 		return
 	}

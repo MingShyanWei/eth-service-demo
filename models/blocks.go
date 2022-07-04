@@ -35,7 +35,7 @@ func (blockWithTranscations *BlockWithTranscations) GetBlockDetail(num int64) (b
 	if err != nil {
 		return
 	}
-	// SELECT `tx_hash` FROM `transactions` WHERE num = 20597939s
+	// SELECT `tx_hash` FROM `transactions` WHERE num = 20597939
 	err = db.GetDb().Debug().Model(&Transaction{}).Select("tx_hash").Where("num = ?", num).Find(&blocks.TxHashs).Error
 
 	return
