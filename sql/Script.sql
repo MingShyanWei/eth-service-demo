@@ -22,7 +22,8 @@ SELECT * FROM `transactions` WHERE tx_hash = '0x00022e52e02a3de454789b20cbe69333
 Explain
 select * FROM transactions t JOIN transaction_logs tl ON t.tx_hash =tl.tx_hash WHERE t.tx_hash = '0x00022e52e02a3de454789b20cbe69333f4646d52f8e2a7bdd9ab100dc44623b9'
 
-
+Explain
+SELECT * FROM `blocks` WHERE num BETWEEN 20984837 AND 20984857 ORDER BY Num DESC
 
 select @@profiling 
 

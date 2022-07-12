@@ -5,6 +5,11 @@
 
 
 
+## Optimize
+1. SQL explain
+2. API: list blocks with cache
+3. API: Response with gzip
+
 ## Module
 - API Server
 - RPC2DB
