@@ -20,7 +20,7 @@ spec:
         - name: "stepnhub"
       containers:
         - name: eth-service-demo-api
-          image: stepnhub.azurecr.io/eth-service-demo-api:20220629
+          image: stepnhub.azurecr.io/eth-service-demo-api:20220712
           ports:
             - name: http
               containerPort: 8000

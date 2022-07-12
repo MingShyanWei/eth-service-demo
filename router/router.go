@@ -5,11 +5,13 @@ import (
 
 	v1 "eth-service-demo/apis/v1"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
 	router := gin.Default()
+	router.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	router.GET("/", root.Hello)
 

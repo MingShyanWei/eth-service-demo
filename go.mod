@@ -4,6 +4,8 @@ go 1.18
 
 require (
 	github.com/ethereum/go-ethereum v1.10.19
+	github.com/gin-contrib/gzip v0.0.6
+	github.com/gin-gonic/gin v1.8.1
 	gorm.io/driver/mysql v1.3.4
 	gorm.io/gorm v1.23.6
 )
@@ -15,7 +17,6 @@ require (
 	github.com/deckarep/golang-set v1.8.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.8.1 // indirect
 	github.com/go-ole/go-ole v1.2.1 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
