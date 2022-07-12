@@ -1,7 +1,9 @@
 package apis
 
 import (
+	cache "eth-service-demo/cache"
 	model "eth-service-demo/models"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -11,6 +13,7 @@ import (
 func ListBlocks(c *gin.Context) {
 
 	var block model.Block
+	var result []model.Block
 
 	limit, err := strconv.Atoi(c.Request.FormValue("limit"))
 	if err != nil {
@@ -21,13 +24,19 @@ func ListBlocks(c *gin.Context) {
 		return
 	}
 
-	result, err := block.ListBlocks(limit)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code":    -1,
-			"message": ",list block error",
-		})
-		return
+	log.Println(len(cache.Blocks))
+
+	if len(cache.Blocks) == 0 {
+		result, err = block.ListBlocks(limit)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code":    -1,
+				"message": ",list block error",
+			})
+			return
+		}
+	} else {
+		result = cache.Blocks[0 : limit-1]
 	}
 
 	c.JSON(http.StatusOK, gin.H{

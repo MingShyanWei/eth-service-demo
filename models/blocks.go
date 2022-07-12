@@ -22,10 +22,43 @@ type BlockWithTranscations struct {
 
 func (block *Block) ListBlocks(limit int) (blocks []Block, err error) {
 	// SELECT * FROM `blocks` ORDER BY Num DESC LIMIT 10
-	if err = db.GetDb().Debug().Order("Num DESC").Limit(limit).Find(&blocks).Error; err != nil {
+	if limit == -1 {
+		if err = db.GetDb().Debug().Order("Num DESC").Find(&blocks).Error; err != nil {
+			return
+		}
+	} else {
+		if err = db.GetDb().Debug().Order("Num DESC").Limit(limit).Find(&blocks).Error; err != nil {
+			return
+		}
+	}
+
+	return
+}
+
+func (block *Block) ListBetweenBlocks(from int, to int) (blocks []Block, err error) {
+	// SELECT * FROM `blocks` ORDER BY Num DESC LIMIT 10
+
+	if err = db.GetDb().Debug().Order("Num DESC").Where("num BETWEEN ? AND ?", from, to).Find(&blocks).Error; err != nil {
 		return
 	}
+
 	return
+}
+
+func (block *Block) GetMaxMinBlockId() (maxBlockId uint64, minBlockId uint64, err error) {
+	maxRow := db.GetDb().Debug().Model(&Block{}).Select("max(num)").Row()
+	minRow := db.GetDb().Debug().Model(&Block{}).Select("min(num)").Row()
+
+	err = maxRow.Scan(&maxBlockId)
+	if err != nil {
+		return maxBlockId, minBlockId, err
+	}
+
+	err = minRow.Scan(&minBlockId)
+	if err != nil {
+		return maxBlockId, minBlockId, err
+	}
+	return maxBlockId, minBlockId, nil
 }
 
 func (blockWithTranscations *BlockWithTranscations) GetBlockDetail(num int64) (blocks BlockWithTranscations, err error) {
