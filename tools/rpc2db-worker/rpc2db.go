@@ -278,7 +278,8 @@ func GetLastBlock(client *ethclient.Client) (int64, error) {
 }
 
 func main() {
-	db.Init()
+	dsn := os.Getenv("DB_CONNECTION")
+	db.Init(dsn)
 
 	workNum, err := strconv.Atoi(os.Getenv("WORKER_NUM"))
 	if err != nil {

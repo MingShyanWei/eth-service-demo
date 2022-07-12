@@ -3,10 +3,12 @@ package main
 import (
 	db "eth-service-demo/database"
 	model "eth-service-demo/models"
+	"os"
 )
 
 func main() {
-	db.Init()
+	dsn := os.Getenv("DB_CONNECTION")
+	db.Init(dsn)
 
-	db.GetDb().AutoMigrate(&model.Block{}, &model.Transaction{}, &model.TransactionLog{})
+	db.GetDb().AutoMigrate(&model.Block{}, &model.Transaction{}, &model.TransactionLog{}, &model.Block2{})
 }
