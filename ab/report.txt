@@ -1,0 +1,58 @@
+>ab -n 1000 -c 100 'https://eth-service-demo-api.stepnhub.com/v1/blocks?limit=1000'
+
+This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking eth-service-demo-api.stepnhub.com (be patient)
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+
+
+Server Software:        
+Server Hostname:        eth-service-demo-api.stepnhub.com
+Server Port:            443
+SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES128-GCM-SHA256,2048,128
+Server Temp Key:        X25519 253 bits
+TLS Server Name:        eth-service-demo-api.stepnhub.com
+
+Document Path:          /v1/blocks?limit=1000
+Document Length:        231780 bytes
+
+Concurrency Level:      100
+Time taken for tests:   34.491 seconds
+Complete requests:      1000
+Failed requests:        0
+Total transferred:      231966000 bytes
+HTML transferred:       231780000 bytes
+Requests per second:    28.99 [#/sec] (mean)
+Time per request:       3449.061 [ms] (mean)
+Time per request:       34.491 [ms] (mean, across all concurrent requests)
+Transfer rate:          6567.85 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:      234  909 228.4    928    1949
+Processing:   454 2393 506.3   2343    5636
+Waiting:       78  363 204.2    326    1715
+Total:        688 3302 455.8   3284    7074
+
+Percentage of the requests served within a certain time (ms)
+  50%   3284
+  66%   3388
+  75%   3499
+  80%   3568
+  90%   3879
+  95%   3999
+  98%   4145
+  99%   4500
+ 100%   7074 (longest request)
