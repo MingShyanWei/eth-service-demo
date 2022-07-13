@@ -35,7 +35,7 @@ func (block *Block) ListBlocks(limit int) (blocks []Block, err error) {
 	return
 }
 
-func (block *Block) ListBetweenBlocks(from int, to int) (blocks []Block, err error) {
+func (block *Block) ListBetweenBlocks(from uint64, to uint64) (blocks []Block, err error) {
 	// SELECT * FROM `blocks` ORDER BY Num DESC LIMIT 10
 
 	if err = db.GetDb().Debug().Order("Num DESC").Where("num BETWEEN ? AND ?", from, to).Find(&blocks).Error; err != nil {

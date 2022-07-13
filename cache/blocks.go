@@ -28,7 +28,7 @@ func UpdateBlocksCashe() {
 		if max > Blocks[0].Num {
 			log.Printf("Update blocks...")
 
-			newBlocks, err := block.ListBetweenBlocks(int(Blocks[0].Num), int(max))
+			newBlocks, err := block.ListBetweenBlocks(Blocks[0].Num, max)
 			if err != nil {
 				log.Println(err)
 			}
