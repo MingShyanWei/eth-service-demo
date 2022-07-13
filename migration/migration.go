@@ -10,5 +10,5 @@ func main() {
 	dsn := os.Getenv("DB_CONNECTION")
 	db.Init(dsn)
 
-	db.GetDb().AutoMigrate(&model.Block{}, &model.Transaction{}, &model.TransactionLog{}, &model.Block2{})
+	db.GetDb().AutoMigrate(&model.Block{}, &model.Transaction{}, &model.TransactionLog{})
 }
